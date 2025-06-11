@@ -13,8 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Doctor {
+  id              Int         @id @default(autoincrement())
+  nombre          String
+  correo          String      @unique
+  contrasenia     String
+  especialidad    String?
+  telefono        String?
+  activo          Boolean     @default(true)
+  createdAt       DateTime    @default(now())
+  atenciones      Atencion[]
+}
+
 model Triage {
-  id              Int       @id @default(autoincrement())
+  id              Int         @id @default(autoincrement())
   age             Int
   sex             String
   symptoms        String
@@ -24,6 +36,21 @@ model Triage {
   mental          String
   arrivalMode     String
   disposition     String
-  createdAt       DateTime  @default(now())
+  createdAt       DateTime    @default(now())
   description     String?
+  atencion        Atencion?
 }
+
+model Atencion {
+  id              Int         @id @default(autoincrement())
+  fecha           DateTime    @default(now())
+  estadoAtencion  String
+  tipoAtencion    String
+  notas           String?
+  doctorId        Int
+  triageId        Int         @unique
+
+  doctor          Doctor      @relation(fields: [doctorId], references: [id])
+  triage          Triage      @relation(fields: [triageId], references: [id])
+}
+

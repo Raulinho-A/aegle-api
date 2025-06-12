@@ -2,10 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { UpdateTriageDto } from './dto/update-triage.dto';
 import { CreateTriageDto } from './dto/create-triage.dto';
+import { TriageClassifierService } from './triage-classifier.service';
 
 @Injectable()
 export class TriageService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private classifier: TriageClassifierService,
+  ) {}
 
   async getAllTriages() {
     return this.prisma.triage.findMany();
@@ -21,7 +25,14 @@ export class TriageService {
   }
 
   async createTriage(dto: CreateTriageDto) {
-    return this.prisma.triage.create({ data: dto });
+    const severity = await this.classifier.classify(dto);
+
+    return this.prisma.triage.create({
+      data: {
+        ...dto,
+        triageCategory: severity,
+      },
+    });
   }
 
   async update(id: number, dto: UpdateTriageDto) {

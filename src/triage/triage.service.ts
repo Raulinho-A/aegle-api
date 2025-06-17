@@ -3,6 +3,7 @@ import { PrismaService } from 'src/database/prisma.service';
 import { UpdateTriageDto } from './dto/update-triage.dto';
 import { CreateTriageDto } from './dto/create-triage.dto';
 import { TriageClassifierService } from './triage-classifier.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class TriageService {
@@ -45,7 +46,7 @@ export class TriageService {
       ? {
           triageCategory: {
             equals: category,
-            mode: 'insensitive',
+            mode: Prisma.QueryMode.insensitive,
           },
         }
       : {};

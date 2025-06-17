@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { CreateTriageDto } from './dto/create-triage.dto';
-import { mapToModelInput } from './mapper/triage.mapper';
+import { mapToModelInput } from './mapper/triage-model.mapper';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 

@@ -38,6 +38,37 @@ export class TriageService {
     });
   }
 
+  async getPaginatedTriages(page = 1, pageSize = 10, category?: string) {
+    const skip = (page - 1) * pageSize;
+
+    const where = category
+      ? {
+          triageCategory: {
+            equals: category,
+            mode: 'insensitive',
+          },
+        }
+      : {};
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.triage.findMany({
+        where,
+        skip,
+        take: pageSize,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.triage.count({ where }),
+    ]);
+
+    return {
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+      items,
+    };
+  }
+
   async update(id: number, dto: UpdateTriageDto) {
     const exists = await this.prisma.triage.findUnique({ where: { id } });
 

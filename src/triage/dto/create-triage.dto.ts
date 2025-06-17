@@ -1,7 +1,7 @@
 import {
-  IsBoolean,
   IsEnum,
   IsInt,
+  IsNumber,
   IsOptional,
   IsString,
   Max,
@@ -13,22 +13,6 @@ export enum Sex {
   Femenino = 'F',
 }
 
-export enum Disposition {
-  Traslado = 'Traslado',
-  Ingreso = 'Ingreso a sala',
-  UCI = 'UCI',
-  Alta = 'Alta',
-  Muerte = 'Muerte',
-  Cirugia = 'Cirugía',
-}
-
-export enum MentalStatus {
-  Alerta = 'Alerta',
-  Verbal = 'Verbal',
-  Dolor = 'Dolor',
-  SinRespuesta = 'Sin respuesta',
-}
-
 export enum ArrivalMode {
   Caminando = 'Caminando',
   AmbulanciaPublica = 'Ambulancia pública',
@@ -37,15 +21,20 @@ export enum ArrivalMode {
   Otro = 'Otro',
 }
 
-export enum TriageCategory {
-  Uno = '1',
-  Dos = '2',
-  Tres = '3',
-  Cuatro = '4',
-  Cinco = '5',
+export enum MentalStatus {
+  Alerta = 1,
+  Verbal = 2,
+  Dolor = 3,
+  SinRespuesta = 4,
 }
 
 export class CreateTriageDto {
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(2)
+  group?: number = 2; // Por defecto: Regional
+
   @IsInt()
   @Min(0)
   @Max(120)
@@ -54,27 +43,32 @@ export class CreateTriageDto {
   @IsEnum(Sex)
   sex: Sex;
 
-  @IsString()
-  symptoms: string;
+  @IsEnum(ArrivalMode)
+  arrivalMode: ArrivalMode;
 
-  @IsBoolean()
-  pain: boolean;
-
-  @IsBoolean()
-  injury: boolean;
+  @IsInt()
+  injury: number;
 
   @IsEnum(MentalStatus)
   mental: MentalStatus;
 
-  @IsEnum(ArrivalMode)
-  arrivalMode: ArrivalMode;
+  @IsInt()
+  nrsPain: number;
+
+  @IsNumber()
+  sbp: number;
+
+  @IsNumber()
+  hr: number;
+
+  @IsNumber()
+  rr: number;
+
+  @IsNumber()
+  bt: number;
 
   @IsString()
-  @IsEnum(Disposition)
-  disposition: Disposition;
-
-  @IsEnum(TriageCategory)
-  triageCategory: TriageCategory;
+  symptoms: string;
 
   @IsOptional()
   @IsString()

@@ -30,7 +30,10 @@ export class TriageService {
     return this.prisma.triage.create({
       data: {
         ...dto,
-        triageCategory: severity,
+        triageCategory:
+          severity === 'Clasificación no disponible'
+            ? 'No emergencia'
+            : severity,
       },
     });
   }

@@ -27,15 +27,19 @@ model Doctor {
 
 model Triage {
   id              Int         @id @default(autoincrement())
-  age             Int
-  sex             String
-  symptoms        String
-  triageCategory  String
-  pain            Boolean
-  injury          Boolean
-  mental          String
-  arrivalMode     String
-  disposition     String
+  group           Int         @default(2) // 1 = Local, 2 = Regional
+  age             Int         
+  sex             String      // "M" o "F"
+  arrivalMode     String      // "Caminando", "Ambulancia pública", etc.
+  injury          Int         // 1 = No, 2 = Sí
+  mental          Int         // "Alerta", "Verbal", etc.
+  nrsPain         Float
+  sbp             Float
+  hr              Float
+  rr              Float
+  bt              Float
+  triageCategory  String      // "Emergencia" o "No emergencia"
+  symptoms        String?
   createdAt       DateTime    @default(now())
   description     String?
   atencion        Atencion?

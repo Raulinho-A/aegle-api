@@ -31,12 +31,12 @@ export class TriageController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateTriageDto) {
+  async updateTriage(@Param('id') id: string, @Body() dto: UpdateTriageDto) {
     return await this.triageService.update(Number(id), dto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async removeTriage(@Param('id') id: string) {
     return await this.triageService.delete(Number(id));
   }
 }
